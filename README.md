@@ -6,6 +6,9 @@ Ever struggle to find a ride to and from the airport? Domerrides allows you to p
 React frontend, Firebase backend. 
 Using Material UI and React Bootstrap for styling and layout. 
 
+# Run
+`npm start`
+
 # Current Routes 
 - /     ->> /login
 - /login
