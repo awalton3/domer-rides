@@ -22,6 +22,7 @@ class AuthContextProvider extends Component {
         );
     }
 
+    // Methods 
     login(email, password) {
         //TODO: add google sign in 
         return auth.signInWithEmailAndPassword(email, password); 

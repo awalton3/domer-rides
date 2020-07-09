@@ -24,6 +24,7 @@ class GroupContextProvider extends Component {
         );
     }
 
+    // Query Methods 
     createGroup(origin, dest, time, userId) {
         const groupId = this.createGroupId(origin, dest, time); 
         const dbPath = this.getDbPath(origin, dest, time)
@@ -40,6 +41,7 @@ class GroupContextProvider extends Component {
         return db.collection(dbPath).get(); 
     }
 
+    // Utility Methods 
     createGroupId(origin, dest, time) {
         return origin + '_' + dest + '_' + time + (new Date()).getTime(); 
     }
@@ -49,7 +51,7 @@ class GroupContextProvider extends Component {
     }
 
     getDbPath(origin, dest, time) {
-        return 'origin/' + origin + '/destination/' + dest + '/On/' + time + '/Groups/';  
+        return 'Origin/' + origin + '/Destination/' + dest + '/On/' + time + '/Groups/';  
     } 
 
     // joinGroup(groupId, userId) {

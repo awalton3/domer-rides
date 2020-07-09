@@ -1,27 +1,27 @@
 import React, { useContext } from 'react';
-// import TextField from '@material-ui/core/TextField';
-// import Button from '@material-ui/core/Button';
-// import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import './Auth.css';
-import '../../App.css';
-
-
 import AuthForm from './AuthForm';
 import { Link } from 'react-router-dom';
 import { AuthContext } from './AuthContext';
 import { useHistory } from "react-router-dom";
 
+//Styles
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import './Auth.css';
+import '../../App.css';
+import { UserContext } from '../../common/UserContext';
 
 function Auth(props) {
 
+    // Grab auth service
     const auth = useContext(AuthContext);
+    const userModel = useContext(UserContext)
+
+    //Init component routing 
     let history = useHistory();
 
-    // const [ view, setView ] = useState(props.view ? props.view : 'login'); 
-
+    // Conditionally show login and register views 
     const view = props.view ? props.view : 'login'
     let switch_prompt = "Don't have an account? Register."
     if (view === 'register') {
@@ -29,17 +29,28 @@ function Auth(props) {
     }
 
     function handleAuth(email, password) {
-        //TODO: add notifications (snack bar) of errors 
+        //TODO: add notifications (snack bar) for errors/successes
+        //For now, see console for errors 
         if (view === 'login') {
             auth.login(email, password)
-                .then(() => {
-                    history.push('/');
+                .then(res => { //on success
+
+                    //Update user model 
+                    userModel.setUser(res.user.uid);  
+
+                    //navigate to home
+                    history.push('/search');
                 })
                 .catch(error => console.log(error))
         } else {
             auth.register(email, password)
-                .then(() => {
-                    history.push('/register');
+                .then(res => { //on success 
+                    //Add expanded user 
+                    userModel.createUser(res.user.uid, email, 'soccerlady4')
+                        .then(res => { console.log(res) })
+                        .catch(error => console.log(error))
+                    //navigate to login 
+                    history.push('/login');
                 })
                 .catch(error => console.log(error))
         }

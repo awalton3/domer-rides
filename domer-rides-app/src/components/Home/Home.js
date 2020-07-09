@@ -19,6 +19,7 @@ import TextField from '@material-ui/core/TextField';
 //logout 
 //better styling/branding 
 // Error warnings
+//add an actual loading spinner 
 
 function Home() {
 
