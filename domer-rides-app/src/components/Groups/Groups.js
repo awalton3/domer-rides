@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Group from './Group';
 import { GroupContext } from './GroupContext';
-import { UserContext } from '../../common/UserContext';
+// import { UserContext } from '../../common/UserContext';
 
 // Styles
 import Container from 'react-bootstrap/Container';
@@ -25,7 +25,6 @@ function Groups(props) {
         groupModel.createGroup(props.origin, props.dest, props.time, userId)
             .then(res => {
                 fetchGroups(); 
-                setLoaded(true); 
             })
             .catch(error => console.log(error))
     }
@@ -57,6 +56,8 @@ function Groups(props) {
 
     return (
         <Container>
+            { loaded && groups.length ? <div><h1>Groups</h1><hr/></div> : ''}
+           
             {groups.map(group => <Group key={group.id} origin={props.origin} dest={props.dest} time={props.time} members={group.data.members} />
             )}
             {!loaded ?
