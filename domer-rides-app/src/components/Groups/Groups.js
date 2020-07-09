@@ -2,64 +2,71 @@ import React, { useContext, useEffect, useState } from 'react';
 import Group from '../Group/Group';
 import { GroupContext } from './GroupContext';
 import Button from '@material-ui/core/Button';
+import '../../App.css';
+
+// Bootstrap Grid
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
 
 function Groups(props) {
 
-    console.log(props);
+    console.log('component ran'); 
 
     // Initialize state
     const [groups, setGroups] = useState([]);
     const [loaded, setLoaded] = useState(false);
     const groupModel = useContext(GroupContext);
 
-    // Fake user input 
-    // const test = {
-    //     origin: "ND",
-    //     dest: "MDW",
-    //     time: 1594181989744,
-    //     members: ['user1', 'user2', 'user3']
-    // // };
     const userId = "ttttthhhhhuuuutttthhhuuuu";
-    // const time = (new Date()).getTime();
 
     function createGroup() {
-        setLoaded(false); 
+        setLoaded(false);
         groupModel.createGroup(props.origin, props.dest, props.time, userId)
-            .then(res => { 
-                console.log('successfully created group'); 
-                setLoaded(true); 
+            .then(res => {
+                console.log('successfully created group');
+                setLoaded(true);
             })
             .catch(error => console.log(error))
     }
 
     useEffect(() => {
         groupModel.fetchGroups(props.origin, props.dest, props.time)
-            .then(function (querySnapshot) {
-                let groups = []
-                querySnapshot.forEach(doc => {
-                    let group = {
-                        id: doc.id,
-                        data: doc.data()
-                    }
-                    groups.push(group);
-
-                });
-                //Updating state
-                setGroups(groups);
-                setLoaded(true);
-            })
-            .catch(function (error) {
-                console.log("Error getting documents: ", error);
+        .then(querySnapshot => {
+            let groups = []
+            querySnapshot.forEach(doc => {
+                let group = {
+                    id: doc.id,
+                    data: doc.data()
+                }
+                groups.push(group);
             });
-    })
+
+            //Updating state
+            setGroups(groups);
+            setLoaded(true);
+        })
+        .catch(error => {
+            console.log("Error getting documents: ", error);
+        });
+    }, []);
 
     return (
-        // <p>hello</p>
         <div>
             {groups.map(group => <Group origin={props.origin} dest={props.dest} time={props.time} members={group.data.members} />
             )}
             {!loaded ? <p>Loading....</p> : ''}
-            {loaded && !groups.length ? <Button onClick={createGroup}>Create a Group</Button> : ''}
+            {loaded && !groups.length ?
+                <Container>
+                    <Row className="justify-content-center height-full">
+                        <Col className="align-self-center all-center-width">
+                            <h3 className="center-text">No groups available.</h3>
+                            <br/>
+                            <Button onClick={createGroup} variant="contained" color="primary" className="width-full">Create a Group</Button>
+                        </Col>
+                    </Row>
+                </Container> : ''}
         </div>
     );
 }

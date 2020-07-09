@@ -2,14 +2,6 @@
    background-color: #0C2340; 
 }
 
-.height-full {
-    height: 100vh; 
-}
-
-.width-full {
-    width: 100%; 
-}
-
 .auth-container-width {
     max-width: 360px; 
 }

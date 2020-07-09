@@ -5,3 +5,19 @@
 .right-text {
     text-align: right;
 }
+
+.height-full {
+    height: 100vh; 
+}
+
+.width-full {
+    width: 100%; 
+}
+
+.width-half {
+    width: 50%; 
+}
+
+.all-center-width {
+    max-width: 360px; 
+}

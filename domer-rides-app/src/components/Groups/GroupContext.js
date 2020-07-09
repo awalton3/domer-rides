@@ -52,9 +52,9 @@ class GroupContextProvider extends Component {
         return 'origin/' + origin + '/destination/' + dest + '/On/' + time + '/Groups/';  
     } 
 
-    joinGroup(groupId, userId) {
-        //fb code 
-    } 
+    // joinGroup(groupId, userId) {
+    //     //TODO: write this method 
+    // } 
 }
 
 export default GroupContextProvider;
