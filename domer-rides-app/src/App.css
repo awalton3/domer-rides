@@ -21,3 +21,11 @@
 .all-center-width {
     max-width: 360px; 
 }
+
+.accent-bg {
+    background-color: #C99700;
+}
+
+.primary-bg {
+    background-color: #0C2340;
+}

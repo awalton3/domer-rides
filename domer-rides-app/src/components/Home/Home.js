@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useHistory } from "react-router-dom";
 import { airports, ND } from '../../common/constants';
 import '../../App.css';
@@ -13,6 +13,8 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import TextField from '@material-ui/core/TextField';
+import { AuthContext } from '../Auth/AuthContext';
+import { UserContext } from '../../common/UserContext';
 
 //Features to add: 
 //navbar with routing 
@@ -22,6 +24,8 @@ import TextField from '@material-ui/core/TextField';
 //add an actual loading spinner 
 
 function Home() {
+
+    const user = useContext(UserContext)
 
     //Initialize state 
     const [origin, setOrigin] = useState('');
@@ -49,11 +53,17 @@ function Home() {
         history.push(`/groups/${origin}/${dest}/${Date.parse(time)}`);
     }
 
+    function onLogout() {
+        user.logout()
+            .then(() => console.log('user logged out'))
+            .catch(error => console.log(error))
+    }
+
     return (
         <Container>
             <Row className="justify-content-center height-full">
                 <Col className="align-self-center all-center-width">
-                    <h1 className="center-text">Domerrides</h1>
+                    <h1 className="center-text">Find a Ride</h1>
                     <br /><br />
                     <FormControl variant="outlined" className="width-half">
                         <InputLabel id="demo-simple-select-outlined-label">Origin</InputLabel>
@@ -77,7 +87,7 @@ function Home() {
                             {airports.map(airport => <MenuItem key={airport} value={airport}>{airport}</MenuItem>)}
                         </Select>
                     </FormControl>
-                    <br /><br/>
+                    <br /><br />
                     <TextField
                         id="datetime-local"
                         label="Departure time"
@@ -91,11 +101,15 @@ function Home() {
                     />
                     <br /><br />
                     <Button onClick={viewGroups} variant="contained" color="primary" className="width-full">
-                        Find a Ride
+                        Search
                     </Button>
+                    <Button onClick={onLogout}>
+                        Logout
+                 </Button>
                 </Col>
             </Row>
         </Container>
+
     );
 }
 

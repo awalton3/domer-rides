@@ -8,6 +8,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import '../../App.css';
 
 function Groups(props) {
@@ -63,7 +64,7 @@ function Groups(props) {
             {!loaded ?
                 <Row className="justify-content-center height-full">
                     <Col className="align-self-center all-center-width">
-                        <p className="center-text">Loading....</p>
+                        <CircularProgress color="secondary" />
                     </Col>
                 </Row> : ''}
             {loaded && !groups.length ?

@@ -1,6 +1,9 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import ProtectedRoute from './components/Auth/ProtectedRoute';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+
 
 // Components 
 import Home from './components/Home/Home';
@@ -13,37 +16,52 @@ import AuthContextProvider from './components/Auth/AuthContext'
 import GroupContextProvider from './components/Groups/GroupContext';
 import UserContextProvider from './common/UserContext';
 
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#D39F10'
+    },
+    secondary: {
+      main: '#0C2340'
+    }
+  },
+});
+
 function App() {
   return (
-    <Router>
-      <Switch>
 
-        <UserContextProvider>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <Switch>
 
-          <Route path={'/search'} exact component={Home}></Route>
+          <UserContextProvider>
 
-          <Route path={'/groups/:origin/:dest/:time'} exact
-            render={({ match }) => <GroupContextProvider><Groups origin={match.params.origin} dest={match.params.dest} time={match.params.time}></Groups></GroupContextProvider>}>
-          </Route>
+            <ProtectedRoute path={['/', '/search']} exact render={() => <Home />}></ProtectedRoute>
 
-          <Route path={'/my-groups'} exact component={MyGroups}></Route>
+            <ProtectedRoute path={'/groups/:origin/:dest/:time'} exact
+              render={({ match }) => <GroupContextProvider><Groups origin={match.params.origin} dest={match.params.dest} time={match.params.time}></Groups></GroupContextProvider>}>
+            </ProtectedRoute>
 
-          <Route path={['/', '/login']} exact
-            render={() => <AuthContextProvider>
-              <Auth view={'login'} />
-            </AuthContextProvider>}>
-          </Route>
+            <Route path={'/my-groups'} exact render={() => <MyGroups />}></Route>
 
-          <Route path={'/register'} exact
-            render={() => <AuthContextProvider>
-              <Auth view={'register'} />
-            </AuthContextProvider>}>
-          </Route>
+            <Route path={'/login'} exact
+              render={() => <AuthContextProvider>
+                <Auth view={'login'} />
+              </AuthContextProvider>}>
+            </Route>
 
-        </UserContextProvider>
+            <Route path={'/register'} exact
+              render={() => <AuthContextProvider>
+                <Auth view={'register'} />
+              </AuthContextProvider>}>
+            </Route>
 
-      </Switch>
-    </Router>
+          </UserContextProvider>
+
+        </Switch>
+      </Router>
+    </ThemeProvider>
+
   );
 }
 
