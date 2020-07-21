@@ -5,6 +5,9 @@
 
 ## [v.3] Authentication
 
+** Mainly Edited files include: 
+  * src/components/auth/*  
+  * src/common/UserContext.js   ---> created a firebase user watcher to check if user is authenticated
 * Added reusable protected routes component
 * Added autologin to Auth component
 * Added redirect to Auth if not authenticated 
