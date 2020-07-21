@@ -1,7 +1,18 @@
 # CHANGELOG.md
 
-#Contributors
+# Contributors
 * Auna Walton  
+
+## [v.3] Authentication
+
+* Added reusable protected routes component
+* Added autologin to Auth component
+* Added redirect to Auth if not authenticated 
+
+* Added styling/branding 
+* Added app toolbar 
+
+## [v.2]
 
 # Overall 
 * Added routing between Auth, Home, Groups, and MyGroups views 
