@@ -3,7 +3,7 @@ import AuthForm from './AuthForm';
 import { Link } from 'react-router-dom';
 import { AuthContext } from './AuthContext';
 import { useHistory } from "react-router-dom";
-import logo from "./domerrides.png"
+import logo from "./../../images/domerrides.png"
 
 //Styles
 import Container from 'react-bootstrap/Container'

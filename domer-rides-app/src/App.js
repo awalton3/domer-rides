@@ -11,6 +11,7 @@ import Auth from './components/Auth/Auth.js';
 import Groups from './components/Groups/Groups';
 import MyGroups from './components/MyGroups/MyGroups';
 
+
 // Services/Models 
 import AuthContextProvider from './components/Auth/AuthContext'
 import GroupContextProvider from './components/Groups/GroupContext';
@@ -42,7 +43,7 @@ function App() {
               render={({ match }) => <GroupContextProvider><Groups origin={match.params.origin} dest={match.params.dest} time={match.params.time}></Groups></GroupContextProvider>}>
             </ProtectedRoute>
 
-            <Route path={'/my-groups'} exact render={() => <MyGroups />}></Route>
+            <ProtectedRoute path={'/my-groups'} exact render={() => <MyGroups />}></ProtectedRoute>
 
             <Route path={'/login'} exact
               render={() => <AuthContextProvider>

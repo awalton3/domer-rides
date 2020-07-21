@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { UserContext } from '../../common/UserContext';
 import { auth } from '../../firebase';
+import Toolbar from '../../common/Toolbar';
 
 function ProtectedRoute({ render: render, ...rest }) {
 
@@ -10,7 +11,7 @@ function ProtectedRoute({ render: render, ...rest }) {
     return (
         <Route {...rest} render={() => {
             if (user.isAuthenticated) {
-                return <Route {...rest} render={render} />
+                return <span><Toolbar /><Route {...rest} render={render} /></span>
             } else if (user.isAuthenticated === undefined) {
                 return <p>Loading...</p>
             } else {

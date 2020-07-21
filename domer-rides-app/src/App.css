@@ -10,6 +10,10 @@
     height: 100vh; 
 }
 
+.height-fullish {
+    height: 90vh; 
+}
+
 .width-full {
     width: 100%; 
 }
@@ -28,4 +32,29 @@
 
 .primary-bg {
     background-color: #0C2340;
+}
+
+.text-white {
+    color: #ffffff; 
+}
+
+.text-primary {
+    color: #0C2340; 
+}
+
+.text-accent {
+    color: #C99700; 
+}
+
+.toolbar {
+    padding: 17px;
+    font-size: 15px; 
+    color: white; 
+    height: 10vh; 
+}
+
+.toolbar-user {
+    position: absolute;
+    right: 0; 
+    padding-right: 17px; 
 }

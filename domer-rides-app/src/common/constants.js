@@ -3,4 +3,10 @@ export const airports = [
     'ORD',
     'SBN'
 ]; 
+export const places = [
+    'MDW',
+    'ORD',
+    'SBN',
+    'ND'
+]; 
 export const ND = 'ND'; 

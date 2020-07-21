@@ -13,19 +13,22 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import TextField from '@material-ui/core/TextField';
+import { withStyles } from '@material-ui/core/styles';
 import { AuthContext } from '../Auth/AuthContext';
 import { UserContext } from '../../common/UserContext';
 
-//Features to add: 
-//navbar with routing 
-//logout 
-//better styling/branding 
-// Error warnings
-//add an actual loading spinner 
+const styles = theme => ({
+    notchedOutline: {
+        borderWidth: '1px',
+        borderColor: '#fff !important'
+    }
+});
 
-function Home() {
+function Home(props) {
 
     const user = useContext(UserContext)
+    const classes = props
+    console.log(classes)
 
     //Initialize state 
     const [origin, setOrigin] = useState('');
@@ -53,17 +56,11 @@ function Home() {
         history.push(`/groups/${origin}/${dest}/${Date.parse(time)}`);
     }
 
-    function onLogout() {
-        user.logout()
-            .then(() => console.log('user logged out'))
-            .catch(error => console.log(error))
-    }
-
     return (
-        <Container>
-            <Row className="justify-content-center height-full">
+        <Container fluid className="primary-bg">
+            <Row className="justify-content-center height-fullish">
                 <Col className="align-self-center all-center-width">
-                    <h1 className="center-text">Find a Ride</h1>
+                    <h1 className="center-text text-white">Find a Ride</h1>
                     <br /><br />
                     <FormControl variant="outlined" className="width-half">
                         <InputLabel id="demo-simple-select-outlined-label">Origin</InputLabel>
@@ -73,10 +70,10 @@ function Home() {
                             value={origin}
                             onChange={handleChangeOrigin}
                             label="origin">
-                            <MenuItem value={ND}>Notre Dame</MenuItem>
+                            {[...airports, ND].map(place => <MenuItem key={place} value={place}>{place}</MenuItem>)}
                         </Select>
                     </FormControl>
-                    <FormControl variant="outlined" className="width-half">
+                    <FormControl variant="outlined" className="width-half" disabled={origin ? false : true}>
                         <InputLabel id="demo-simple-select-outlined-label">Destination</InputLabel>
                         <Select
                             labelId="demo-simple-select-outlined-label"
@@ -84,7 +81,11 @@ function Home() {
                             value={dest}
                             onChange={handleChangeDest}
                             label="dest">
-                            {airports.map(airport => <MenuItem key={airport} value={airport}>{airport}</MenuItem>)}
+                            {
+                                origin === ND ?
+                                    airports.map(airport => <MenuItem key={airport} value={airport}>{airport}</MenuItem>)
+                                    : <MenuItem key={ND} value={ND}>{ND}</MenuItem>
+                            }
                         </Select>
                     </FormControl>
                     <br /><br />
@@ -98,14 +99,16 @@ function Home() {
                         InputLabelProps={{
                             shrink: true,
                         }}
+                        InputProps={{
+                            classes: {
+                                notchedOutline: classes.notchedOutline,
+                            }
+                        }}
                     />
                     <br /><br />
                     <Button onClick={viewGroups} variant="contained" color="primary" className="width-full">
                         Search
                     </Button>
-                    <Button onClick={onLogout}>
-                        Logout
-                 </Button>
                 </Col>
             </Row>
         </Container>
@@ -113,4 +116,4 @@ function Home() {
     );
 }
 
-export default Home; 
+export default withStyles(styles)(Home); 
