@@ -13,22 +13,21 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import TextField from '@material-ui/core/TextField';
-import { withStyles } from '@material-ui/core/styles';
-import { AuthContext } from '../Auth/AuthContext';
+// import { withStyles } from '@material-ui/core/styles';
 import { UserContext } from '../../common/UserContext';
 
-const styles = theme => ({
-    notchedOutline: {
-        borderWidth: '1px',
-        borderColor: '#fff !important'
-    }
-});
+// const styles = theme => ({
+//     notchedOutline: {
+//         borderWidth: '1px',
+//         borderColor: '#fff !important'
+//     }
+// });
 
 function Home(props) {
 
     const user = useContext(UserContext)
-    const classes = props
-    console.log(classes)
+    // const classes = props
+    // console.log(classes)
 
     //Initialize state 
     const [origin, setOrigin] = useState('');
@@ -99,14 +98,14 @@ function Home(props) {
                         InputLabelProps={{
                             shrink: true,
                         }}
-                        InputProps={{
-                            classes: {
-                                notchedOutline: classes.notchedOutline,
-                            }
-                        }}
+                        // InputProps={{
+                        //     classes: {
+                        //         notchedOutline:{  },
+                        //     }
+                        // }}
                     />
                     <br /><br />
-                    <Button onClick={viewGroups} variant="contained" color="primary" className="width-full">
+                    <Button onClick={viewGroups} variant="contained" color="primary" className="width-full" disabled={ !origin || !dest || !time }>
                         Search
                     </Button>
                 </Col>
@@ -116,4 +115,4 @@ function Home(props) {
     );
 }
 
-export default withStyles(styles)(Home); 
+export default Home; 

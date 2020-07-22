@@ -10,3 +10,4 @@ export const places = [
     'ND'
 ]; 
 export const ND = 'ND'; 
+export const MAX_MEMBERS = 5; 

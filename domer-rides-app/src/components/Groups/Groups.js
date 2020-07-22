@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Group from './Group';
 import { GroupContext } from './GroupContext';
-// import { UserContext } from '../../common/UserContext';
+import { UserContext } from '../../common/UserContext';
+import { MAX_MEMBERS } from '../../common/constants';
 
 // Styles
 import Container from 'react-bootstrap/Container';
@@ -17,16 +18,12 @@ function Groups(props) {
     const [groups, setGroups] = useState([]);
     const [loaded, setLoaded] = useState(false);
     const groupModel = useContext(GroupContext);
-    //const userModel = useContext(UserContext);
-    // on refresh, userId on user model disappears, so using this temporarily
-    const userId = 'iOQWJziUw0MiiuR6ef1AqglCFSr1';
+    const userModel = useContext(UserContext);
 
     function createGroup() {
         setLoaded(false);
-        groupModel.createGroup(props.origin, props.dest, props.time, userId)
-            .then(res => {
-                fetchGroups(); 
-            })
+        groupModel.createGroup(props.origin, props.dest, props.time, userModel.user.uid)
+            .then(res => fetchGroups())
             .catch(error => console.log(error))
     }
 
@@ -51,15 +48,39 @@ function Groups(props) {
             });
     }
 
+    function joinGroup(group) {
+        console.log("Group in groups component: ", group);
+        console.log("User in Groups component: ", userModel);
+
+        // TODO: Check if user has a time conflict 
+
+        const tasks = []
+        const updateGroup = groupModel.updateGroupMembers(group.id, userModel.user.uid, group.data.members);
+        const updateUser = userModel.updateUserActiveGroups(userModel.user.uid, group.id);
+
+        //TODO: add atomicity for code below...
+
+        //Check group size
+        if (group.data.members.length == MAX_MEMBERS - 1) {
+            tasks.push(groupModel.closeGroup()); 
+        }
+
+        Promise.all([...tasks, updateGroup, updateUser])
+            .then(res => {
+                console.log('successfully joined group')
+                fetchGroups(); 
+            })
+            .catch(error => console.log(error))
+    }
+
     useEffect(() => {
-        fetchGroups(); 
+        fetchGroups();
     }, []);
 
     return (
         <Container>
-            { loaded && groups.length ? <div><h1>Groups</h1><hr/></div> : ''}
-           
-            {groups.map(group => <Group key={group.id} origin={props.origin} dest={props.dest} time={props.time} members={group.data.members} />
+            {loaded && groups.length ? <div><h1>Groups</h1><hr /></div> : ''}
+            {groups.map(group => <Group key={group.id} origin={props.origin} dest={props.dest} time={props.time} members={group.data.members} disableJoin={userModel.user.activeGroups.includes(group.id)} onJoin={() => joinGroup(group)} />
             )}
             {!loaded ?
                 <Row className="justify-content-center height-full">

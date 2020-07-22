@@ -94,7 +94,7 @@ function Auth(props) {
                 <Col className="align-self-center auth-container-width">
                     <img src={logo} alt="logo" width="330px" />
                     <AuthForm view={view}
-                        onSubmit={(email, password, username) => { handleAuth(email, password, username) }} />
+                        onSubmit={(email, password, username) => handleAuth(email, password, username) } />
                     <br />
                     <Link to={`/${view === 'login' ? 'register' : 'login'}`}>
                         <p className="center-text">{switch_prompt}</p>

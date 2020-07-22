@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { UserContext } from '../../common/UserContext';
-import { auth } from '../../firebase';
 import Toolbar from '../../common/Toolbar';
 
 function ProtectedRoute({ render: render, ...rest }) {
@@ -15,7 +14,6 @@ function ProtectedRoute({ render: render, ...rest }) {
             } else if (user.isAuthenticated === undefined) {
                 return <p>Loading...</p>
             } else {
-                console.log(user.isAuthenticated);
                 return <Redirect to={{ pathname: '/login' }} />
             }
         }} />

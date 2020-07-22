@@ -11,12 +11,14 @@ class UserContextProvider extends Component {
         super()
         this.state = {
             collection: 'Users/',
-            userId: '',
+            user: null, 
             setUser: this.setUser.bind(this),
             createUser: this.createUser,
             deleteUser: this.deleteUser,
             getUser: this.getUser,
-            logout: this.logout
+            logout: this.logout,
+            updateUser: this.updateUser,
+            updateUserActiveGroups: this.updateUserActiveGroups
         }
     }
 
@@ -24,6 +26,17 @@ class UserContextProvider extends Component {
         // Subscribe to auth observer 
         auth.onAuthStateChanged(user => {
             this.setState({ isAuthenticated: !!user });
+            if (user) {
+                this.getUser(user.uid)
+                    .then(userRes => {
+                        const uid = userRes.id
+                        const userObj = userRes.data()
+                        this.setState({ 
+                            user: {...userObj, ...{ uid: uid }} 
+                        }); 
+                    })
+                    .catch(error => console.log(error))
+            }
         });
     }
 
@@ -40,7 +53,7 @@ class UserContextProvider extends Component {
     }
 
     getUser(id) {
-        return db.collection(this.collection).doc(id).get();
+        return db.collection(this.state.collection).doc(id).get();
     }
 
     createUser(id, email, username) {
@@ -51,13 +64,20 @@ class UserContextProvider extends Component {
         });
     }
 
+    updateUserActiveGroups(uid, groupId, remove) {
+       const updatedArray = !remove ? [...this.user.activeGroups, groupId] : this.user.activeGroups.splice(this.user.activeGroups.indexOf(groupId), 1); 
+        return db.collection(this.collection).doc(uid).update({
+            activeGroups: updatedArray
+        })
+    }
+
     deleteUser(id) {
         return db.collection(this.collection).doc(id).delete();
         //TODO: delete user in static Authentication collection too 
     }
 
     logout() {
-        return auth.signOut(); 
+        return auth.signOut();
     }
 }
 

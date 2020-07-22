@@ -14,6 +14,7 @@ function Group(props) {
         width: '350px',
         margin: '10px'
     }
+    console.log(props.disableJoin); 
     return (
         <Card style={cardWidth}>
             <CardContent>
@@ -25,7 +26,7 @@ function Group(props) {
                 </ul>
             </CardContent>
             <CardActions>
-                <Button size="small">Join</Button>
+                <Button size="small" onClick={ props.onJoin } disabled={props.disableJoin}>Join</Button>
             </CardActions>
         </Card>
     );
