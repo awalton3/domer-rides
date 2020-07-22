@@ -29,6 +29,8 @@ function Home(props) {
     // const classes = props
     // console.log(classes)
 
+    console.log(user)
+
     //Initialize state 
     const [origin, setOrigin] = useState('');
     const [dest, setDest] = useState('');
@@ -54,6 +56,7 @@ function Home(props) {
         //Navigate to groups page 
         history.push(`/groups/${origin}/${dest}/${Date.parse(time)}`);
     }
+
 
     return (
         <Container fluid className="primary-bg">

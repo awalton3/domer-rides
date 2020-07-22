@@ -1,0 +1,28 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Arvo:wght@400;700&display=swap'); */
+
+.driving_icon {
+    vertical-align: middle;
+    font-size: 40px;
+    margin: auto 10px; 
+    color: #00843D
+}
+
+.location {
+    font-size: 55px;
+    font-weight: 500;
+    /* font-family: 'Arvo', serif; */
+}
+
+.bottom {
+    position: absolute;
+    bottom: 0;
+    right: 0; 
+}
+
+.top-right {
+    position: absolute;
+    top: 0;
+    right: 0; 
+    margin-right: 20px;
+    margin-top: 20px;
+}

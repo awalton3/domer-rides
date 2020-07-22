@@ -25,6 +25,7 @@ class UserContextProvider extends Component {
     componentWillMount() {
         // Subscribe to auth observer 
         auth.onAuthStateChanged(user => {
+            console.log("DOING STUFF: ", user); 
             this.setState({ isAuthenticated: !!user });
             if (user) {
                 this.getUser(user.uid)

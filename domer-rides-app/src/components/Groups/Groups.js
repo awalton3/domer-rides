@@ -62,13 +62,13 @@ function Groups(props) {
 
         //Check group size
         if (group.data.members.length == MAX_MEMBERS - 1) {
-            tasks.push(groupModel.closeGroup()); 
+            tasks.push(groupModel.closeGroup());
         }
 
         Promise.all([...tasks, updateGroup, updateUser])
             .then(res => {
                 console.log('successfully joined group')
-                fetchGroups(); 
+                fetchGroups();
             })
             .catch(error => console.log(error))
     }
@@ -77,25 +77,24 @@ function Groups(props) {
         fetchGroups();
     }, []);
 
+    const emptyGroupState = <Row className="justify-content-center height-full">
+        <Col className="align-self-center all-center-width">
+            <h3 className="center-text">No groups available.</h3>
+            <br />
+            <Button onClick={createGroup} variant="contained" color="primary" className="width-full">Create a Group</Button>
+        </Col>
+    </Row>
+
     return (
-        <Container>
-            {loaded && groups.length ? <div><h1>Groups</h1><hr /></div> : ''}
-            {groups.map(group => <Group key={group.id} origin={props.origin} dest={props.dest} time={props.time} members={group.data.members} disableJoin={userModel.user.activeGroups.includes(group.id)} onJoin={() => joinGroup(group)} />
-            )}
+        <Container fluid>
+            {groups.map(group => <Group key={group.id} origin={props.origin} dest={props.dest} time={props.time} members={group.data.members} disableJoin={userModel.user.activeGroups.includes(group.id)} onJoin={() => joinGroup(group)} />)}
             {!loaded ?
                 <Row className="justify-content-center height-full">
                     <Col className="align-self-center all-center-width">
                         <CircularProgress color="secondary" />
                     </Col>
                 </Row> : ''}
-            {loaded && !groups.length ?
-                <Row className="justify-content-center height-full">
-                    <Col className="align-self-center all-center-width">
-                        <h3 className="center-text">No groups available.</h3>
-                        <br />
-                        <Button onClick={createGroup} variant="contained" color="primary" className="width-full">Create a Group</Button>
-                    </Col>
-                </Row> : ''}
+            {loaded && !groups.length ? emptyGroupState : ''}
         </Container>
     );
 }

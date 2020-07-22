@@ -11,7 +11,7 @@
 }
 
 .height-fullish {
-    height: 90vh; 
+    height: 92vh; 
 }
 
 .width-full {
@@ -50,7 +50,22 @@
     padding: 17px;
     font-size: 15px; 
     color: white; 
-    height: 10vh; 
+    height: 8vh; 
+}
+
+.toolbar-icons {
+    color: #30546c; 
+    vertical-align: middle;
+    text-align: center;
+}
+
+.toolbar-icons i {
+    cursor: pointer;
+    margin: auto 6px; 
+}
+
+.toolbar-icons i:hover {
+    color: #C99700; 
 }
 
 .toolbar-user {
