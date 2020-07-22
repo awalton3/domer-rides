@@ -10,9 +10,9 @@
     height: 100vh; 
 }
 
-.height-fullish {
-    height: 92vh; 
-}
+/* .height-fullish {
+    height: 100vh; 
+} */
 
 .width-full {
     width: 100%; 
@@ -32,6 +32,10 @@
 
 .primary-bg {
     background-color: #0C2340;
+}
+
+.light-bg {
+    background-color: #eee; 
 }
 
 .text-white {

@@ -26,10 +26,6 @@ import { UserContext } from '../../common/UserContext';
 function Home(props) {
 
     const user = useContext(UserContext)
-    // const classes = props
-    // console.log(classes)
-
-    console.log(user)
 
     //Initialize state 
     const [origin, setOrigin] = useState('');
@@ -57,12 +53,11 @@ function Home(props) {
         history.push(`/groups/${origin}/${dest}/${Date.parse(time)}`);
     }
 
-
     return (
-        <Container fluid className="primary-bg">
-            <Row className="justify-content-center height-fullish">
+        <Container fluid>
+            <Row className="justify-content-center height-full light-bg">
                 <Col className="align-self-center all-center-width">
-                    <h1 className="center-text text-white">Find a Ride</h1>
+                    <h1 className="center-text">Find a Ride</h1>
                     <br /><br />
                     <FormControl variant="outlined" className="width-half">
                         <InputLabel id="demo-simple-select-outlined-label">Origin</InputLabel>

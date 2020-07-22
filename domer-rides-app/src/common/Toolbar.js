@@ -4,11 +4,10 @@ import logo from '../images/domerrides.png'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import "../App.css";
-import Button from '@material-ui/core/Button';
 import { UserContext } from './UserContext';
 import AppBar from '@material-ui/core/AppBar';
-import Badge from '@material-ui/core/Badge';
-import { withStyles } from '@material-ui/core/styles';
+import StyledBadge from './StyledBadge';
+
 
 
 export default function Toolbar(props) {
@@ -43,19 +42,13 @@ export default function Toolbar(props) {
         bottom: 0
     }
 
-    const StyledBadge = withStyles((theme) => ({
-        badge: {
-          right: '25px',
-          top: '5px',
-          padding: '0 4px',
-        },
-      }))(Badge);
-
-    // <Row>
-    //     <Badge badgeContent={3} color="primary">
-    //         <i className="material-icons">groups</i>
-    //     </Badge>
-    // </Row>
+    // const StyledBadge = withStyles((theme) => ({
+    //     badge: {
+    //       right: '25px',
+    //       top: '5px',
+    //       padding: '0 4px',
+    //     },
+    //   }))(Badge);
 
     console.log(window.innerWidth)
 
@@ -65,7 +58,7 @@ export default function Toolbar(props) {
 
                 {screenWide ?
                     <Col>
-                        <h3>Domerries</h3>
+                        <h3>Domerrides</h3>
                     </Col> : ''
                 }
                 <Col>

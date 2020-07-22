@@ -3,6 +3,7 @@ import Group from './Group';
 import { GroupContext } from './GroupContext';
 import { UserContext } from '../../common/UserContext';
 import { MAX_MEMBERS } from '../../common/constants';
+import { full_name } from '../../common/constants'; 
 
 // Styles
 import Container from 'react-bootstrap/Container';
@@ -11,8 +12,14 @@ import Col from 'react-bootstrap/Col';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import '../../App.css';
+import './Group.css'; 
 
 function Groups(props) {
+
+    const spacer = {
+        margin: '20px',
+        paddingTop: '85px'
+    }
 
     // Initialize state
     const [groups, setGroups] = useState([]);
@@ -86,7 +93,18 @@ function Groups(props) {
     </Row>
 
     return (
-        <Container fluid>
+        <Container style={spacer}>
+            <Row className="justify-content-start width-full no-gutters">
+                <span className="location">{props.origin}</span>
+                <i className="driving_icon material-icons">local_shipping</i>
+                <span className="location">{props.dest}</span>
+            </Row>
+            <Row className="justify-content-start width-full no-gutters">
+                <span>{ full_name[props.origin]}</span>
+                <i className="arrow_icon material-icons">double_arrow</i>
+                <span>{ full_name[props.dest] }</span>
+            </Row> 
+            <hr/>
             {groups.map(group => <Group key={group.id} origin={props.origin} dest={props.dest} time={props.time} members={group.data.members} disableJoin={userModel.user.activeGroups.includes(group.id)} onJoin={() => joinGroup(group)} />)}
             {!loaded ?
                 <Row className="justify-content-center height-full">

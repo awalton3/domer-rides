@@ -7,16 +7,43 @@
     color: #00843D
 }
 
+.driving-icon-sm {
+    vertical-align: middle;
+    font-size: 15px;
+    margin: auto 6px; 
+    color: #00843D
+}
+
+.arrow_icon {
+    vertical-align: middle;
+    color: #00843D;
+    margin: auto 10px; 
+}
+
+.group-icon {
+    font-size: 24px; 
+}
+
 .location {
     font-size: 55px;
     font-weight: 500;
     /* font-family: 'Arvo', serif; */
 }
 
+.location-sm {
+    font-size: 17px;
+    font-weight: 500;
+    /* font-family: 'Arvo', serif; */
+}
+
+.date_time {
+    font-size: 40px;
+    font-weight: 400;
+}
+
 .bottom {
     position: absolute;
-    bottom: 0;
-    right: 0; 
+    bottom: 2;
 }
 
 .top-right {
