@@ -16,7 +16,9 @@ class GroupContextProvider extends Component {
             createGroupId: this.createGroupId,
             getDbPath: this.getDbPath,
             parseGroupId: this.parseGroupId,
-            updateGroupMembers: this.updateGroupMembers
+            updateGroupMembers: this.updateGroupMembers,
+            getGroup: this.getGroup,
+            fetchActiveGroups: this.fetchActiveGroups
         }
     }
 
@@ -29,21 +31,42 @@ class GroupContextProvider extends Component {
     }
 
     // Query Methods 
-    createGroup(origin, dest, time, userId) {
-        const groupId = this.createGroupId(origin, dest, time); 
-        const dbPath = this.getDbPath(origin, dest, time)
+    createGroup(origin, dest, date, userId, time) {
+        console.log("time in knick of time: ", time); 
+        const groupId = this.createGroupId(origin, dest, date); 
+        const dbPath = this.getDbPath(origin, dest, date)
         return db.collection(dbPath).doc(groupId).set({
             origin: origin, 
             dest: dest, 
+            date: date, 
             time: time, 
             members: [userId],
             owner: userId
-        }); 
+        }), Promise.resolve(groupId); 
     }
 
     fetchGroups(origin, dest, time) {
         const dbPath = this.getDbPath(origin, dest, time); 
         return db.collection(dbPath).get(); 
+    }
+
+    fetchActiveGroups(groupIds) {
+        let groups = []; 
+        groupIds.forEach(id => {
+            this.getGroup(id)
+                .then(doc => {
+                    if (doc.exists) {
+                        groups.push(doc.data())
+                    }
+                }).catch(error => console.log(error))
+        })
+        return groups; 
+    }
+
+    getGroup(id) {
+        const [origin, dest, depart_time, created_at] = this.parseGroupId(id); 
+        const dbPath = this.getDbPath(origin, dest, depart_time)
+        return db.collection(dbPath).doc(id).get()
     }
 
     // Utility Methods 

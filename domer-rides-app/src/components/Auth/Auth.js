@@ -38,25 +38,45 @@ function Auth(props) {
         switch_prompt = "Already have an account? Login.";
     }
 
+    function updateUserModel(uid) {
+        userModel.getUser(uid)
+            .then(userRes => {
+                console.log("YELLOO:, ", userRes)
+                // const uid = userRes.id
+                const userObj = userRes.data()
+                userModel.setUserInSessionStorage({ user: { ...userObj, ...{ uid: uid } } });
+            }).catch(error => console.log(error));
+    }
+
     function handleAuth(email, password, username) {
         if (view === 'login') {
             auth.login(email, password)
-                .then(res => { 
-                    //Update user model 
-                    userModel.setUser(res.user.uid);
-                    //navigate to home
+                .then(res => {
+                    //console.log("Login: ", res.user); 
+                     updateUserModel(res.user.uid);
+                    // userModel.getUser(res.user.uid)
+                    //     .then(userRes => {
+                    //         console.log("YELLOO:, ", userRes)
+                    //         // const uid = userRes.id
+                    //         const userObj = userRes.data()
+                    //.setUserInSessionStorage({ user: { ...userObj, ...{ uid: res.user.uid } } });
+                    //         // Navigate to home 
+                    //         history.push('/search');
+                    //     }).catch(error => console.log(error));
                     history.push('/search');
-                })
-                .catch(error => {
+
+                }).catch(error => {
                     setOpenError({ open: true, message: auth.getErrorMess(error.code) })
                 })
         } else {
             auth.register(email, password)
                 .then(res => {
+                    const fbUserObj = res.user;
                     //Add expanded user 
                     userModel.createUser(res.user.uid, email, username)
                         .then(res => {
                             setOpenSuccess({ open: true, message: 'Successfully created an account' })
+                            updateUserModel(fbUserObj.uid); //should possibly set directly to avoid extra http request.
                             history.push('/login');
                         }).catch(error => { console.log(error) })
                 }).catch(error => setOpenError({ open: true, message: auth.getErrorMess(error.code) }))
@@ -94,7 +114,7 @@ function Auth(props) {
                 <Col className="align-self-center auth-container-width">
                     <img src={logo} alt="logo" width="330px" />
                     <AuthForm view={view}
-                        onSubmit={(email, password, username) => handleAuth(email, password, username) } />
+                        onSubmit={(email, password, username) => handleAuth(email, password, username)} />
                     <br />
                     <Link to={`/${view === 'login' ? 'register' : 'login'}`}>
                         <p className="center-text">{switch_prompt}</p>

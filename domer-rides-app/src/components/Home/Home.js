@@ -30,7 +30,13 @@ function Home(props) {
     //Initialize state 
     const [origin, setOrigin] = useState('');
     const [dest, setDest] = useState('');
-    const [time, setTime] = useState('2017-05-24T10:30');
+    const today = new Date(); 
+    let month = today.getMonth() + 1
+    if (month < 10) {
+        month = "0" + month; 
+    }
+    const currDate = today.getFullYear() + "-" + month + "-" + today.getDate()
+    const [time, setTime] = useState(currDate);
 
     // Initialize component routing 
     let history = useHistory();
@@ -50,7 +56,10 @@ function Home(props) {
 
     function viewGroups() {
         //Navigate to groups page 
-        history.push(`/groups/${origin}/${dest}/${Date.parse(time)}`);
+        const [year, month, date] = time.split('-')
+        const formatted = new Date(year, parseInt(month) - 1, date, 0, 0, 0, 0)
+        console.log(formatted.getTime()); 
+        history.push(`/groups/${origin}/${dest}/${formatted.getTime()}`);
     }
 
     return (
@@ -87,23 +96,18 @@ function Home(props) {
                     </FormControl>
                     <br /><br />
                     <TextField
-                        id="datetime-local"
-                        label="Departure time"
-                        type="datetime-local"
-                        defaultValue={time}
-                        onChange={handleChangeTime}
                         className="width-full"
+                        id="date"
+                        label="Departure Time"
+                        type="date"
+                        defaultValue={ time }
+                        onChange={handleChangeTime}
                         InputLabelProps={{
                             shrink: true,
                         }}
-                        // InputProps={{
-                        //     classes: {
-                        //         notchedOutline:{  },
-                        //     }
-                        // }}
                     />
                     <br /><br />
-                    <Button onClick={viewGroups} variant="contained" color="primary" className="width-full" disabled={ !origin || !dest || !time }>
+                    <Button onClick={viewGroups} variant="contained" color="primary" className="width-full" disabled={!origin || !dest || !time}>
                         Search
                     </Button>
                 </Col>

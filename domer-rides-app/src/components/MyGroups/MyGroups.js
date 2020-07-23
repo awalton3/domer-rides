@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import '../../App.css';
+import { UserContext } from '../../common/UserContext';
 
 function MyGroups() {
+
+    console.log(useContext(UserContext))
     return (
         <div>
             <h1 className="center-text">Current Groups</h1>

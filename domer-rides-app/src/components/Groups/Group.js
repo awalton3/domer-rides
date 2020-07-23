@@ -1,4 +1,5 @@
 import React from 'react';
+import { days, months } from '../../common/constants';
 
 //Material UI - Cards 
 import Card from '@material-ui/core/Card';
@@ -17,7 +18,7 @@ function Group(props) {
     const card = {
         position: 'relative',
         backgroundColor: '#eee',
-        width: '320px',
+        width: '300px',
         height: '320px',
         margin: '10px'
     }
@@ -27,21 +28,21 @@ function Group(props) {
     }
 
     //Convert time 
-    const departure = new Date(parseInt(props.time))
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const departure = new Date(parseInt(props.date))
+    // const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    // const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const month_day = days[departure.getDay()] + ", " + months[departure.getMonth()] + " " + departure.getDate()
-    const time = formatAMPM(departure)
+    const time = tConvert(props.time)
 
-    function formatAMPM(date) {
-        var hours = date.getHours();
-        var minutes = date.getMinutes();
-        var ampm = hours >= 12 ? 'pm' : 'am';
-        hours = hours % 12;
-        hours = hours ? hours : 12; // the hour '0' should be '12'
-        minutes = minutes < 10 ? '0' + minutes : minutes;
-        var strTime = hours + ':' + minutes + ' ' + ampm;
-        return strTime;
+    function tConvert(time) {
+        // Check correct time format and split into components
+        time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+        if (time.length > 1) { // If time format correct
+            time = time.slice(1);  // Remove full string match value
+            time[5] = +time[0] < 12 ? 'AM' : 'PM'; // Set AM/PM
+            time[0] = +time[0] % 12 || 12; // Adjust hours
+        }
+        return time.join(''); // return adjusted time or original string
     }
 
     const joinButton = <Button onClick={props.onJoin} variant="outlined" color="primary" style={button}>Join</Button>
@@ -65,16 +66,14 @@ function Group(props) {
                     </Col>
                 </Row>
                 <br />
-                <p className="date_time center-text">{month_day}</p>
+                <p>{ props.id } </p>
                 <p className="date_time center-text">{time}</p>
                 <Row className="justify-content-center width-full no-gutters">
-                    {props.disableJoin ? joinButton : leaveButton}
+                    {props.disableJoin ? leaveButton : joinButton }
                 </Row>
             </CardContent>
         </Card>
     );
-
-
 
     // return (
     //     <Card style={card}>

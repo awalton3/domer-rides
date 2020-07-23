@@ -11,32 +11,34 @@ class UserContextProvider extends Component {
         super()
         this.state = {
             collection: 'Users/',
-            user: null, 
+            user: null,
             setUser: this.setUser.bind(this),
             createUser: this.createUser,
             deleteUser: this.deleteUser,
             getUser: this.getUser,
             logout: this.logout,
-            updateUser: this.updateUser,
-            updateUserActiveGroups: this.updateUserActiveGroups
+            updateUser: this.setUser.bind(this),
+            updateUserActiveGroups: this.updateUserActiveGroups,
+            getCurrentUser: this.getCurrentUser,
+            setUserInSessionStorage: this.setUserInSessionStorage,
+            getUserActiveGroups: this.getUserActiveGroups
         }
     }
 
     componentWillMount() {
         // Subscribe to auth observer 
-        auth.onAuthStateChanged(user => {
-            console.log("DOING STUFF: ", user); 
+        this.authListener = auth.onAuthStateChanged(user => {
             this.setState({ isAuthenticated: !!user });
             if (user) {
                 this.getUser(user.uid)
                     .then(userRes => {
                         const uid = userRes.id
                         const userObj = userRes.data()
-                        this.setState({ 
-                            user: {...userObj, ...{ uid: uid }} 
-                        }); 
-                    })
-                    .catch(error => console.log(error))
+                        this.setState(Object.assign({}, {
+                            user: { ...userObj, ...{ uid: uid } }
+                        }));
+                        this.setUserInSessionStorage({ ...userObj, ...{ uid: uid } })
+                    }).catch(error => console.log(error))
             }
         });
     }
@@ -49,12 +51,16 @@ class UserContextProvider extends Component {
         );
     }
 
-    setUser(id) {
-        this.setState({ userId: id });
+    setUser(userObj) {
+        this.setState({ user: userObj });
     }
 
     getUser(id) {
         return db.collection(this.state.collection).doc(id).get();
+    }
+
+    getCurrentUser() {
+        return sessionStorage.getItem("user");
     }
 
     createUser(id, email, username) {
@@ -66,19 +72,49 @@ class UserContextProvider extends Component {
     }
 
     updateUserActiveGroups(uid, groupId, remove) {
-       const updatedArray = !remove ? [...this.user.activeGroups, groupId] : this.user.activeGroups.splice(this.user.activeGroups.indexOf(groupId), 1); 
+        const updatedArray = !remove ? [...this.user.activeGroups, groupId] : this.user.activeGroups.splice(this.user.activeGroups.indexOf(groupId), 1);
         return db.collection(this.collection).doc(uid).update({
             activeGroups: updatedArray
-        })
+        }), Promise.resolve(updatedArray)
     }
+
+    // updateUser(userObj) {
+    //     this.setState({ user: userObj });
+    // }
 
     deleteUser(id) {
         return db.collection(this.collection).doc(id).delete();
         //TODO: delete user in static Authentication collection too 
     }
 
+    setUserInSessionStorage(user) {
+        Object.keys(user).forEach(attr => {
+            if (attr === 'activeGroups') {
+                if (user[attr].length) {
+                    sessionStorage.setItem(attr, user[attr].join(', '));
+                }
+            } else {
+                sessionStorage.setItem(attr, user[attr]);
+            }
+        });
+    }
+
+    getUserFromSessionStorage() {
+        return sessionStorage.getItem("user");
+    }
+
+    getUserActiveGroups() {
+        if (!sessionStorage.getItem("activeGroups")) return [];
+        return sessionStorage.getItem("activeGroups").split(", ")
+    }
+
     logout() {
+        sessionStorage.clear();
         return auth.signOut();
+    }
+
+    componentWillUnmount() {
+        this.authListener = undefined;
     }
 }
 

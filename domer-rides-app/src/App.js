@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
@@ -10,7 +10,7 @@ import Home from './components/Home/Home';
 import Auth from './components/Auth/Auth.js';
 import Groups from './components/Groups/Groups';
 import MyGroups from './components/MyGroups/MyGroups';
-
+import ActiveGroups from './components/ActiveGroups';
 
 // Services/Models 
 import AuthContextProvider from './components/Auth/AuthContext'
@@ -44,6 +44,8 @@ function App() {
             </ProtectedRoute>
 
             <ProtectedRoute path={'/my-groups'} exact render={() => <MyGroups />}></ProtectedRoute>
+
+            <ProtectedRoute path={'/active-groups'} exact render={() => <UserContextProvider><GroupContextProvider><ActiveGroups /></GroupContextProvider></UserContextProvider>}></ProtectedRoute>
 
             <Route path={'/login'} exact
               render={() => <AuthContextProvider>

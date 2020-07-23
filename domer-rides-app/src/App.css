@@ -10,6 +10,10 @@
     height: 100vh; 
 }
 
+.height-half {
+    height: 50vh; 
+}
+
 /* .height-fullish {
     height: 100vh; 
 } */
@@ -76,4 +80,13 @@
     position: absolute;
     right: 0; 
     padding-right: 17px; 
+}
+
+.fab-btn {
+    position: fixed;
+    bottom: 0;
+    right: 0; 
+    margin-right: 50px; 
+    margin-bottom: 70px; 
+    color: #eee; 
 }
