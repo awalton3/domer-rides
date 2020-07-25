@@ -3,6 +3,13 @@
 # Contributors
 * Auna Walton  
 
+## [v.4] Individual Feature 
+* As approved by Michael Wicks: I've chosen my individual feature to be the fact that I used React for my project instead of Angular JS. 
+* To run, you need npm. 
+* npm instal; npm start (the same as before)
+* I wasn't quite sure what to include here. 
+* Thanks for a great semester :) 
+
 ## [v.3] Authentication
 
 * Mainly Edited files include: 
